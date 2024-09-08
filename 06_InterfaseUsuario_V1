@@ -1,0 +1,66 @@
+#Nombre: Aldo Emiliano Chavez Lares
+#Registro: 21310238
+#Grupo: 7F1
+#Tema: Interfase de Usuario
+
+# Base de Conocimiento: Reglas conocidas
+knowledge_base = [
+    {"symptom": "hojas_amarillas", "diagnosis": "deficiencia_de_nutrientes"},
+    {"symptom": "hojas_marchitas", "diagnosis": "falta_de_agua"},
+]
+
+# Memoria de Trabajo (datos efímeros)
+working_memory = {}
+
+# Función que muestra las conclusiones del motor de inferencia con explicación
+def mostrar_conclusion(sintoma, diagnostico):
+    print("\nConclusión del Sistema Experto:")
+    print(f"El síntoma ingresado: '{sintoma}' sugiere el diagnóstico: '{diagnostico}'.")
+    print(f"Esta conclusión se basa en el conocimiento almacenado en el sistema experto.")
+
+# Función que verifica si la entrada es coherente con la base de conocimiento
+def es_coherente(sintoma, diagnostico):
+    for regla in knowledge_base:
+        if regla["symptom"] == sintoma and regla["diagnosis"] != diagnostico:
+            return False
+    return True
+
+# Subsistema de Adquisición de Conocimiento: Solicita más información al usuario
+def adquirir_conocimiento():
+    print("\nEl conocimiento actual es insuficiente para llegar a una conclusión.")
+    
+    # Solicita más información del usuario
+    sintoma = input("Ingrese un nuevo síntoma que haya observado: ").strip().lower()
+    diagnostico = input("Ingrese el diagnóstico relacionado con ese síntoma: ").strip().lower()
+    
+    # Valida la coherencia del nuevo conocimiento
+    if es_coherente(sintoma, diagnostico):
+        working_memory["sintoma"] = sintoma
+        working_memory["diagnostico"] = diagnostico
+        print(f"Nuevo conocimiento incorporado: {sintoma} - {diagnostico}")
+        mostrar_conclusion(sintoma, diagnostico)
+    else:
+        print("La información proporcionada es inconsistente con la base de conocimiento existente.")
+        adquirir_conocimiento()
+
+# Motor de Inferencia: Intenta inferir un diagnóstico basado en la memoria de trabajo
+def motor_de_inferencia():
+    sintoma = input("Ingrese el síntoma de su planta (ej: hojas_amarillas, hojas_marchitas, etc.): ").strip().lower()
+    
+    for regla in knowledge_base:
+        if regla["symptom"] == sintoma:
+            mostrar_conclusion(sintoma, regla["diagnosis"])
+            return
+    
+    # Si no se puede hacer una inferencia, se invoca el subsistema de adquisición de conocimiento
+    adquirir_conocimiento()
+
+# Función principal para interactuar con el usuario
+def interactuar_con_usuario():
+    print("Bienvenido al Sistema Experto de Diagnóstico de Enfermedades de Plantas.")
+    print("Por favor, ingrese los síntomas que ha observado.")
+    motor_de_inferencia()
+
+# Punto de entrada del programa
+if __name__ == "__main__":
+    interactuar_con_usuario()
