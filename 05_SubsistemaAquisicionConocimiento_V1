@@ -1,0 +1,63 @@
+#Nombre: Aldo Emiliano Chavez Lares
+#Registro: 21310238
+#Grupo: 7F1
+#Tema: Subsistema de Adquisicion de Conocimiento
+
+# Base de Conocimiento: Reglas conocidas
+knowledge_base = [
+    {"symptom": "hojas_amarillas", "diagnosis": "deficiencia_de_nutrientes"},
+    {"symptom": "hojas_marchitas", "diagnosis": "falta_de_agua"},
+]
+
+# Memoria de Trabajo (datos efímeros)
+working_memory = {}
+
+# Función que verifica si una nueva entrada es coherente con la base de conocimiento
+def es_coherente(sintoma, diagnostico):
+    for regla in knowledge_base:
+        if regla["symptom"] == sintoma and regla["diagnosis"] != diagnostico:
+            return False
+    return True
+
+# Subsistema de Adquisición de Conocimiento: Solicita más información al usuario
+def adquirir_conocimiento():
+    print("El conocimiento actual es insuficiente para llegar a una conclusión.")
+    
+    # Solicita más información del usuario
+    sintoma = input("Ingrese un nuevo síntoma que haya observado: ").strip().lower()
+    diagnostico = input("Ingrese el diagnóstico relacionado con ese síntoma: ").strip().lower()
+    
+    # Valida la coherencia del nuevo conocimiento
+    if es_coherente(sintoma, diagnostico):
+        # Actualiza la memoria de trabajo con la nueva información
+        working_memory["sintoma"] = sintoma
+        working_memory["diagnostico"] = diagnostico
+        print(f"Nuevo conocimiento incorporado: {sintoma} - {diagnostico}")
+    else:
+        print("La información proporcionada es inconsistente con la base de conocimiento existente.")
+        adquirir_conocimiento()
+
+# Motor de Inferencia: Intenta inferir un diagnóstico basado en la memoria de trabajo
+def motor_de_inferencia():
+    sintoma = input("Ingrese el síntoma de su planta (ej: hojas_amarillas, hojas_marchitas, etc.): ").strip().lower()
+    
+    for regla in knowledge_base:
+        if regla["symptom"] == sintoma:
+            print(f"El diagnóstico es: {regla['diagnosis']}")
+            return
+    
+    # Si no se puede hacer una inferencia, se invoca el subsistema de adquisición de conocimiento
+    adquirir_conocimiento()
+    
+    # Una vez que se ha adquirido nuevo conocimiento, reintenta el proceso de inferencia
+    if working_memory:
+        print(f"Basado en el nuevo conocimiento, el diagnóstico es: {working_memory['diagnostico']}")
+
+# Función que simula la interacción con el usuario
+def interactuar_con_usuario():
+    print("Bienvenido al Sistema Experto de Diagnóstico de Enfermedades de Plantas.")
+    motor_de_inferencia()
+
+# Punto de entrada del programa
+if __name__ == "__main__":
+    interactuar_con_usuario()
