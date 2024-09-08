@@ -1,0 +1,56 @@
+#Nombre: Aldo Emiliano Chavez Lares
+#Registro: 21310238
+#Grupo: 7F1
+#Tema: Motor de Inferencia
+
+import random
+
+# Base de Conocimiento: Almacena las reglas con probabilidades asociadas
+knowledge_base = [
+    {"symptom": "hojas_amarillas", "diagnosis": "deficiencia_de_nutrientes", "probability": 0.8},
+    {"symptom": "hojas_marchitas", "diagnosis": "falta_de_agua", "probability": 0.7},
+    {"symptom": "manchas_negras", "diagnosis": "enfermedad_fúngica", "probability": 0.9},
+    {"symptom": "hojas_con_enrollamiento", "diagnosis": "plaga_de_insectos", "probability": 0.6},
+]
+
+# Función del motor de inferencia para manejar incertidumbre
+def inferencia_probabilistica(sintoma, certeza_del_sintoma):
+    posibles_diagnosticos = []
+    
+    for regla in knowledge_base:
+        if regla["symptom"] == sintoma:
+            probabilidad_final = regla["probability"] * certeza_del_sintoma
+            posibles_diagnosticos.append({"diagnosis": regla["diagnosis"], "probability": probabilidad_final})
+    
+    if posibles_diagnosticos:
+        # Ordena los diagnósticos por la probabilidad más alta
+        posibles_diagnosticos.sort(key=lambda x: x["probability"], reverse=True)
+        mejor_diagnostico = posibles_diagnosticos[0]
+        
+        print(f"Basado en los datos proporcionados, el diagnóstico más probable es: {mejor_diagnostico['diagnosis']} "
+              f"con una probabilidad del {mejor_diagnostico['probability']:.2f}.")
+    else:
+        print("No se encontró ningún diagnóstico probable basado en los síntomas proporcionados.")
+
+# Función que simula la interacción con el usuario final
+def interactuar_con_usuario():
+    print("Bienvenido al Sistema Experto de Diagnóstico de Enfermedades de Plantas.")
+    
+    # El usuario ingresa el síntoma
+    sintoma = input("Ingrese el síntoma de su planta (ej: hojas_amarillas, hojas_marchitas, etc.): ").strip().lower()
+    
+    # El usuario proporciona una certeza sobre su síntoma (entre 0 y 1)
+    try:
+        certeza_del_sintoma = float(input("En una escala de 0 a 1, ¿cuán seguro está de su síntoma? (Ej: 0.8): ").strip())
+        if certeza_del_sintoma < 0 or certeza_del_sintoma > 1:
+            raise ValueError
+    except ValueError:
+        print("Por favor, ingrese un valor de certeza válido entre 0 y 1.")
+        return
+    
+    # Realiza el diagnóstico basado en el síntoma y la certeza
+    inferencia_probabilistica(sintoma, certeza_del_sintoma)
+
+# Punto de entrada del programa
+if __name__ == "__main__":
+    interactuar_con_usuario()
