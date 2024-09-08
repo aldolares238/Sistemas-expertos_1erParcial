@@ -1,0 +1,48 @@
+#Nombre: Aldo Emiliano Chavez Lares
+#Registro: 21310238
+#Grupo: 7F1
+#Tema: Base de conocimientos
+
+# Base de Conocimiento: Reglas de diagnóstico (permanente)
+knowledge_base = [
+    {"symptom": "hojas_amarillas", "diagnosis": "deficiencia_de_nutrientes"},
+    {"symptom": "hojas_marchitas", "diagnosis": "falta_de_agua"},
+    {"symptom": "manchas_negras", "diagnosis": "enfermedad_fúngica"},
+    {"symptom": "hojas_con_enrollamiento", "diagnosis": "plaga_de_insectos"},
+    {"symptom": "tallos_quebrados", "diagnosis": "daño_mecánico"},
+]
+
+# Memoria de Trabajo: Almacena datos temporales del usuario (efímero)
+working_memory = {}
+
+# Función del motor de inferencia para diagnosticar basado en los síntomas
+def inferencia_sistema_experto():
+    sintoma = working_memory.get("sintoma")
+    
+    for regla in knowledge_base:
+        if regla["symptom"] == sintoma:
+            working_memory["diagnosis"] = regla["diagnosis"]
+            return regla["diagnosis"]
+    
+    return "Diagnóstico no encontrado. Se necesita más información o revisión por un experto."
+
+# Función que simula la interacción con el usuario final
+def interactuar_con_usuario():
+    print("Bienvenido al Sistema Experto de Diagnóstico de Enfermedades de Plantas.")
+    
+    # Almacena el síntoma ingresado en la memoria de trabajo (datos específicos)
+    sintoma = input("Ingrese el síntoma de su planta (ej: hojas_amarillas, hojas_marchitas, etc.): ").strip().lower()
+    working_memory["sintoma"] = sintoma
+    
+    # Realiza el diagnóstico
+    diagnostico = inferencia_sistema_experto()
+    
+    # Muestra el resultado al usuario final
+    print(f"El sistema experto sugiere el siguiente diagnóstico: {diagnostico}")
+    
+    # Limpia la memoria de trabajo (datos efímeros)
+    working_memory.clear()
+
+# Punto de entrada del programa
+if __name__ == "__main__":
+    interactuar_con_usuario()
