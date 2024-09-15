@@ -1,3 +1,7 @@
+#Nombre: Aldo Emiliano Chavez Lares
+#Registro: 21310238
+#Grupo: 7F1
+
 import matplotlib.pyplot as plt  # Para la visualización del grafo
 import networkx as nx  # Para la creación y manipulación de grafos
 import random  # Para generar costos aleatorios
