@@ -1,3 +1,7 @@
+#Nombre: Aldo Emiliano Chavez Lares
+#Registro: 21310238
+#Grupo: 7F1
+
 import heapq
 import matplotlib.pyplot as plt
 import networkx as nx
